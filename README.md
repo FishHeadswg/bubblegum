@@ -1,2 +1,0 @@
-# bubblegum
-The big quiz

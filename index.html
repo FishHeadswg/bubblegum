@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bubblegum Color Personality Quiz</title>
+  <meta name="description" content="Take a fancy food-based personality quiz to discover which bubblegum color matches your vibe." />
+  <style>
+    :root {
+      --bg-1: #fff0f8;
+      --bg-2: #e9fbff;
+      --ink: #301b3f;
+      --muted: #735b84;
+      --card: rgba(255, 255, 255, 0.78);
+      --card-solid: #ffffff;
+      --accent: #ff4faf;
+      --accent-2: #7c5cff;
+      --ring: rgba(255, 79, 175, 0.35);
+      --shadow: 0 24px 70px rgba(80, 22, 110, 0.18);
+      --radius: 30px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 10%, rgba(255, 92, 178, 0.28), transparent 28%),
+        radial-gradient(circle at 92% 6%, rgba(115, 224, 255, 0.38), transparent 26%),
+        radial-gradient(circle at 85% 85%, rgba(255, 230, 105, 0.42), transparent 28%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2));
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      border-radius: 999px;
+      pointer-events: none;
+      z-index: -1;
+      filter: blur(2px);
+      opacity: 0.7;
+    }
+
+    body::before {
+      width: 280px;
+      height: 280px;
+      left: -90px;
+      bottom: 8%;
+      background: radial-gradient(circle at 35% 35%, #fff, #ff84c8 32%, #ff4faf 70%);
+    }
+
+    body::after {
+      width: 230px;
+      height: 230px;
+      right: -55px;
+      top: 36%;
+      background: radial-gradient(circle at 35% 35%, #fff, #9df1ff 34%, #44c8ef 75%);
+    }
+
+    .page-shell {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 34px 0 60px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+      gap: 30px;
+      align-items: center;
+      min-height: 88vh;
+    }
+
+    .glass-card {
+      background: var(--card);
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .hero-copy {
+      padding: clamp(28px, 5vw, 56px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-copy::before {
+      content: "";
+      position: absolute;
+      inset: -70px auto auto -70px;
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.8), rgba(255, 79, 175, 0.18) 58%, transparent 68%);
+      z-index: -1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      color: #8c1d67;
+      font-weight: 800;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(255, 79, 175, 0.2);
+    }
+
+    .sparkle {
+      display: inline-block;
+      animation: twinkle 1.9s ease-in-out infinite;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+      50% { transform: scale(1.25) rotate(10deg); opacity: 1; }
+    }
+
+    h1 {
+      margin: 22px 0 16px;
+      font-size: clamp(3rem, 8vw, 6.6rem);
+      line-height: 0.89;
+      letter-spacing: -0.075em;
+    }
+
+    .gradient-text {
+      background: linear-gradient(100deg, #ff329e, #8d5cff 48%, #12bde5 92%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-copy p {
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(1.02rem, 2.1vw, 1.24rem);
+      line-height: 1.72;
+      max-width: 680px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      margin-top: 30px;
+    }
+
+    .btn {
+      appearance: none;
+      border: 0;
+      border-radius: 999px;
+      padding: 15px 24px;
+      font: inherit;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease, background 180ms ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      color: white;
+      background: linear-gradient(135deg, #ff4faf, #8d5cff 58%, #18c6ef);
+      box-shadow: 0 14px 34px rgba(151, 69, 255, 0.3);
+    }
+
+    .btn-secondary {
+      color: #6e2a86;
+      background: rgba(255, 255, 255, 0.76);
+      border: 1px solid rgba(124, 92, 255, 0.2);
+    }
+
+    .btn:hover,
+    .btn:focus-visible {
+      transform: translateY(-2px);
+      filter: saturate(1.08);
+      box-shadow: 0 18px 38px rgba(151, 69, 255, 0.22);
+      outline: none;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .stat {
+      padding: 14px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.58);
+      border: 1px solid rgba(255, 255, 255, 0.72);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.3rem;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+
+    .hero-art {
+      min-height: 530px;
+      padding: 24px;
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-art::before {
+      content: "";
+      position: absolute;
+      inset: 38px;
+      border-radius: 50%;
+      background: conic-gradient(from 140deg, #ff5bb5, #ffe267, #68e6a1, #49d0ff, #9d76ff, #ff5bb5);
+      filter: blur(20px);
+      opacity: 0.45;
+      animation: slowSpin 14s linear infinite;
+    }
+
+    @keyframes slowSpin {
+      to { transform: rotate(360deg); }
+    }
+
+    .gum-orbit {
+      position: relative;
+      width: min(410px, 84vw);
+      aspect-ratio: 1;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+    }
+
+    .gum-center {
+      width: 54%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 32% 24%, rgba(255,255,255,0.96) 0 10%, rgba(255,255,255,0.35) 11% 19%, transparent 20%),
+        radial-gradient(circle at 68% 78%, rgba(177, 33, 119, 0.2), transparent 25%),
+        linear-gradient(145deg, #ff9bd0, #ff4faf 55%, #d62f92);
+      box-shadow:
+        inset -18px -24px 40px rgba(128, 16, 88, 0.24),
+        inset 18px 18px 26px rgba(255, 255, 255, 0.4),
+        0 28px 70px rgba(255, 79, 175, 0.38);
+      animation: float 4.6s ease-in-out infinite;
+      position: relative;
+      z-index: 2;
+    }
+
+    .gum-center::after {
+      content: "Bubblegum\A Oracle";
+      white-space: pre;
+      position: absolute;
+      inset: 50% auto auto 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      font-weight: 1000;
+      color: rgba(255,255,255,0.92);
+      text-shadow: 0 2px 10px rgba(114, 17, 86, 0.28);
+      letter-spacing: -0.03em;
+      font-size: clamp(1rem, 2.4vw, 1.45rem);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-16px) rotate(3deg); }
+    }
+
+    .mini-gum {
+      position: absolute;
+      width: 82px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 25%, #fff 0 11%, rgba(255,255,255,0.45) 12% 20%, transparent 21%), var(--gum);
+      box-shadow: inset -12px -16px 24px rgba(76, 26, 91, 0.18), 0 18px 38px rgba(92, 25, 112, 0.16);
+      animation: bob 4s ease-in-out infinite;
+    }
+
+    .mini-gum:nth-child(1) { --gum: linear-gradient(145deg, #89ecff, #26bae8); top: 4%; left: 39%; animation-delay: -1.4s; }
+    .mini-gum:nth-child(2) { --gum: linear-gradient(145deg, #ffe87d, #ffc83d); top: 26%; right: 2%; animation-delay: -2.2s; }
+    .mini-gum:nth-child(3) { --gum: linear-gradient(145deg, #9df2ba, #35cc7c); bottom: 14%; right: 12%; animation-delay: -0.7s; }
+    .mini-gum:nth-child(4) { --gum: linear-gradient(145deg, #c4a1ff, #8759ff); bottom: 9%; left: 10%; animation-delay: -1.9s; }
+    .mini-gum:nth-child(5) { --gum: linear-gradient(145deg, #ffb3d8, #ff4faf); top: 27%; left: 0; animation-delay: -0.3s; }
+
+    @keyframes bob {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-12px) scale(1.04); }
+    }
+
+    .quiz-section {
+      margin-top: 10px;
+      display: none;
+    }
+
+    .quiz-section.active {
+      display: block;
+    }
+
+    .quiz-card {
+      padding: clamp(22px, 4vw, 42px);
+    }
+
+    .quiz-topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .progress-wrap {
+      flex: 1;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-weight: 900;
+      font-size: 0.94rem;
+      margin-bottom: 10px;
+    }
+
+    .progress-track {
+      height: 14px;
+      border-radius: 999px;
+      background: rgba(92, 65, 116, 0.12);
+      overflow: hidden;
+      box-shadow: inset 0 1px 4px rgba(49, 22, 63, 0.1);
+    }
+
+    .progress-fill {
+      width: 5%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #ff4faf, #8d5cff, #22c8ee);
+      transition: width 280ms ease;
+    }
+
+    .pill {
+      white-space: nowrap;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.74);
+      border: 1px solid rgba(255,255,255,0.78);
+      color: #72267c;
+      font-weight: 1000;
+      box-shadow: 0 10px 24px rgba(92, 25, 112, 0.08);
+    }
+
+    .question {
+      font-size: clamp(1.75rem, 4vw, 3.2rem);
+      letter-spacing: -0.05em;
+      line-height: 1.03;
+      margin: 8px 0 26px;
+    }
+
+    .answers {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .answer-btn {
+      text-align: left;
+      border: 1px solid rgba(124, 92, 255, 0.14);
+      background: rgba(255, 255, 255, 0.72);
+      border-radius: 24px;
+      padding: 18px 18px;
+      min-height: 92px;
+      cursor: pointer;
+      font: inherit;
+      color: var(--ink);
+      box-shadow: 0 12px 30px rgba(81, 35, 105, 0.08);
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background 160ms ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .answer-btn::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 7px;
+      background: linear-gradient(180deg, #ff4faf, #8d5cff, #22c8ee);
+      opacity: 0;
+      transition: opacity 160ms ease;
+    }
+
+    .answer-btn:hover,
+    .answer-btn:focus-visible {
+      transform: translateY(-3px);
+      border-color: rgba(255, 79, 175, 0.36);
+      box-shadow: 0 18px 38px rgba(81, 35, 105, 0.14);
+      background: rgba(255, 255, 255, 0.94);
+      outline: none;
+    }
+
+    .answer-btn:hover::before,
+    .answer-btn:focus-visible::before {
+      opacity: 1;
+    }
+
+    .answer-emoji {
+      display: inline-grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      margin-right: 10px;
+      background: rgba(255, 255, 255, 0.84);
+      box-shadow: inset 0 0 0 1px rgba(118, 69, 149, 0.08);
+      vertical-align: middle;
+      font-size: 1.18rem;
+    }
+
+    .answer-title {
+      font-weight: 1000;
+      font-size: 1.06rem;
+      vertical-align: middle;
+    }
+
+    .answer-desc {
+      display: block;
+      color: var(--muted);
+      line-height: 1.45;
+      margin: 10px 0 0 50px;
+      font-size: 0.95rem;
+      font-weight: 650;
+    }
+
+    .quiz-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .back-btn {
+      color: #6e2a86;
+      background: rgba(255, 255, 255, 0.66);
+      border: 1px solid rgba(124, 92, 255, 0.18);
+      visibility: hidden;
+    }
+
+    .back-btn.show {
+      visibility: visible;
+    }
+
+    .result-section {
+      margin-top: 10px;
+      display: none;
+    }
+
+    .result-section.active {
+      display: block;
+    }
+
+    .result-card {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.85fr) minmax(0, 1.15fr);
+      gap: 26px;
+      align-items: center;
+      padding: clamp(24px, 4vw, 46px);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .result-card::before {
+      content: "";
+      position: absolute;
+      inset: -40% -20% auto auto;
+      width: 480px;
+      height: 480px;
+      border-radius: 999px;
+      background: radial-gradient(circle, var(--result-glow, rgba(255,79,175,0.35)), transparent 68%);
+      z-index: -1;
+    }
+
+    .result-art-wrap {
+      display: grid;
+      place-items: center;
+      min-height: 380px;
+      border-radius: 34px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.78), rgba(255,255,255,0.36)),
+        repeating-linear-gradient(-45deg, rgba(255,255,255,0.25) 0 12px, rgba(255,255,255,0.08) 12px 24px);
+      border: 1px solid rgba(255,255,255,0.74);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .result-art-wrap::before,
+    .result-art-wrap::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.54);
+    }
+
+    .result-art-wrap::before {
+      width: 110px;
+      height: 110px;
+      top: 28px;
+      right: 32px;
+    }
+
+    .result-art-wrap::after {
+      width: 62px;
+      height: 62px;
+      left: 28px;
+      bottom: 32px;
+    }
+
+    .bubblegum-picture {
+      width: min(290px, 72vw);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      position: relative;
+      background:
+        radial-gradient(circle at 31% 23%, rgba(255,255,255,0.96) 0 11%, rgba(255,255,255,0.38) 12% 21%, transparent 22%),
+        radial-gradient(circle at 69% 78%, rgba(52, 16, 69, 0.18), transparent 24%),
+        linear-gradient(145deg, var(--gum-light), var(--gum-main) 54%, var(--gum-dark));
+      box-shadow:
+        inset -22px -30px 42px rgba(55, 18, 72, 0.2),
+        inset 20px 20px 28px rgba(255, 255, 255, 0.38),
+        0 34px 70px var(--result-shadow, rgba(255,79,175,0.3));
+      z-index: 2;
+      animation: resultFloat 5s ease-in-out infinite;
+    }
+
+    .bubblegum-picture::before,
+    .bubblegum-picture::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      filter: blur(1px);
+    }
+
+    .bubblegum-picture::before {
+      width: 40px;
+      height: 40px;
+      top: 36%;
+      right: 20%;
+    }
+
+    .bubblegum-picture::after {
+      width: 22px;
+      height: 22px;
+      left: 24%;
+      bottom: 23%;
+    }
+
+    @keyframes resultFloat {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-12px) rotate(2deg); }
+    }
+
+    .result-kicker {
+      font-size: 0.9rem;
+      color: #8c1d67;
+      font-weight: 1000;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .result-title {
+      font-size: clamp(2.3rem, 5vw, 5rem);
+      line-height: 0.94;
+      letter-spacing: -0.065em;
+      margin: 0 0 18px;
+    }
+
+    .result-text {
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.72;
+      margin: 0 0 20px;
+      font-weight: 600;
+    }
+
+    .trait-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 22px 0 26px;
+    }
+
+    .trait {
+      padding: 10px 13px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(255,255,255,0.7);
+      color: #5f3571;
+      font-weight: 900;
+      font-size: 0.9rem;
+    }
+
+    .result-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .share-box {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.62);
+      border: 1px solid rgba(255,255,255,0.72);
+      color: #69467b;
+      font-weight: 750;
+      line-height: 1.55;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: #7a5e8f;
+      font-weight: 800;
+      margin-top: 32px;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 860px) {
+      .hero,
+      .result-card {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: auto;
+        padding-top: 16px;
+      }
+
+      .hero-art {
+        min-height: 380px;
+      }
+
+      .answers {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-row {
+        grid-template-columns: 1fr;
+      }
+
+      .quiz-topbar {
+        align-items: stretch;
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .page-shell {
+        width: min(100% - 22px, 1120px);
+        padding-top: 16px;
+      }
+
+      .hero-copy,
+      .quiz-card,
+      .result-card {
+        border-radius: 24px;
+      }
+
+      .answer-desc {
+        margin-left: 0;
+      }
+
+      .answer-emoji {
+        margin-bottom: 8px;
+      }
+
+      .quiz-controls,
+      .hero-actions,
+      .result-actions {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page-shell">
+    <section class="hero" id="home">
+      <div class="hero-copy glass-card">
+        <div class="eyebrow"><span class="sparkle">✦</span> Food Mood Quiz</div>
+        <h1>Which <span class="gradient-text">bubblegum color</span> suits your personality?</h1>
+        <p>
+          Answer 20 tasty questions about pizza, snacks, desserts, drinks, and comfort foods.
+          Your cravings will reveal the bubblegum shade that matches your energy.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" id="startQuiz">Start the Quiz 🍬</button>
+          <a class="btn btn-secondary" href="#quiz">20 food questions</a>
+        </div>
+        <div class="stats-row" aria-label="Quiz details">
+          <div class="stat"><strong>20</strong><span>Food picks</span></div>
+          <div class="stat"><strong>5</strong><span>Bubblegum colors</span></div>
+          <div class="stat"><strong>1</strong><span>Personality match</span></div>
+        </div>
+      </div>
+
+      <div class="hero-art glass-card" aria-hidden="true">
+        <div class="gum-orbit">
+          <div class="mini-gum"></div>
+          <div class="mini-gum"></div>
+          <div class="mini-gum"></div>
+          <div class="mini-gum"></div>
+          <div class="mini-gum"></div>
+          <div class="gum-center"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="quiz-section" id="quiz" aria-live="polite">
+      <div class="quiz-card glass-card">
+        <div class="quiz-topbar">
+          <div class="progress-wrap">
+            <div class="progress-label">
+              <span id="questionCounter">Question 1 of 20</span>
+              <span id="progressPercent">5%</span>
+            </div>
+            <div class="progress-track" aria-hidden="true">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+          </div>
+          <div class="pill" id="quizMood">Pick what tastes best ✨</div>
+        </div>
+
+        <h2 class="question" id="questionText"></h2>
+        <div class="answers" id="answers"></div>
+
+        <div class="quiz-controls">
+          <button class="btn back-btn" id="backButton">← Back</button>
+          <button class="btn btn-secondary" id="restartSmall">Restart</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="result-section" id="result" aria-live="polite">
+      <div class="result-card glass-card" id="resultCard">
+        <div class="result-art-wrap">
+          <div class="bubblegum-picture" id="bubblegumPicture" role="img" aria-label="A shiny bubblegum ball showing your result color"></div>
+        </div>
+        <div class="result-copy">
+          <div class="result-kicker">Your bubblegum color is</div>
+          <h2 class="result-title gradient-text" id="resultTitle"></h2>
+          <p class="result-text" id="resultDescription"></p>
+          <div class="trait-grid" id="traitGrid"></div>
+          <div class="result-actions">
+            <button class="btn btn-primary" id="retakeButton">Retake Quiz 🍭</button>
+            <button class="btn btn-secondary" id="copyButton">Copy Result</button>
+          </div>
+          <div class="share-box hidden" id="copyNotice">Copied! Paste your bubblegum personality wherever you want.</div>
+        </div>
+      </div>
+    </section>
+
+    <p class="footer-note">Made for GitHub Pages • Fancy, food-powered, and bubblegum-bright</p>
+  </main>
+
+  <script>
+    const results = {
+      pink: {
+        name: "Strawberry Pink",
+        light: "#ffc1df",
+        main: "#ff4faf",
+        dark: "#d72c8d",
+        glow: "rgba(255, 79, 175, 0.42)",
+        shadow: "rgba(255, 79, 175, 0.34)",
+        description: "You are sweet, expressive, and impossible to ignore in the best way. You bring main-character energy to ordinary moments, love a little treat, and make people feel included without trying too hard.",
+        traits: ["Playful", "Warm", "Creative", "Social", "Treat-loving"]
+      },
+      blue: {
+        name: "Blueberry Blue",
+        light: "#a8efff",
+        main: "#2cc7ef",
+        dark: "#1689ca",
+        glow: "rgba(44, 199, 239, 0.42)",
+        shadow: "rgba(44, 199, 239, 0.34)",
+        description: "You are calm, curious, and a little bit dreamy. You notice details other people miss, enjoy foods with a refreshing twist, and have a cool-headed way of making any hangout feel easy.",
+        traits: ["Chill", "Curious", "Imaginative", "Fresh", "Thoughtful"]
+      },
+      green: {
+        name: "Mint Green",
+        light: "#b6f8c9",
+        main: "#3bd483",
+        dark: "#199f61",
+        glow: "rgba(59, 212, 131, 0.42)",
+        shadow: "rgba(59, 212, 131, 0.32)",
+        description: "You are balanced, upbeat, and naturally refreshing to be around. You like foods that feel bright and satisfying, and your personality has a grounded spark that makes others trust your taste.",
+        traits: ["Balanced", "Bright", "Reliable", "Fresh", "Kind"]
+      },
+      yellow: {
+        name: "Lemon Pop Yellow",
+        light: "#fff08a",
+        main: "#ffd23f",
+        dark: "#ee9e14",
+        glow: "rgba(255, 210, 63, 0.48)",
+        shadow: "rgba(255, 184, 47, 0.34)",
+        description: "You are sunny, adventurous, and powered by good vibes. You gravitate toward bold, crispy, tangy, and fun foods, and you have the kind of optimism that makes everything feel more exciting.",
+        traits: ["Sunny", "Bold", "Funny", "Energetic", "Adventurous"]
+      },
+      purple: {
+        name: "Grape Purple",
+        light: "#ceb0ff",
+        main: "#8d5cff",
+        dark: "#6030d8",
+        glow: "rgba(141, 92, 255, 0.42)",
+        shadow: "rgba(141, 92, 255, 0.34)",
+        description: "You are stylish, thoughtful, and a little mysterious. You like foods with richness, drama, and comfort, and your vibe says you know exactly what you like without needing everyone else to agree.",
+        traits: ["Stylish", "Deep", "Original", "Cozy", "Confident"]
+      }
+    };
+
+    const questions = [
+      {
+        text: "Your dream pizza topping combo is...",
+        answers: [
+          { emoji: "🍍", title: "Pineapple and ham", desc: "Sweet, salty, and controversial in a fun way.", color: "yellow" },
+          { emoji: "🍄", title: "Mushrooms and herbs", desc: "Earthy, cozy, and a little sophisticated.", color: "purple" },
+          { emoji: "🧀", title: "Extra cheese", desc: "Classic comfort with maximum melt.", color: "pink" },
+          { emoji: "🌶️", title: "Peppers and spice", desc: "Bright flavor with a confident kick.", color: "green" }
+        ]
+      },
+      {
+        text: "Pick the snack you would bring to a movie night.",
+        answers: [
+          { emoji: "🍿", title: "Buttery popcorn", desc: "Crispy, golden, and impossible to stop eating.", color: "yellow" },
+          { emoji: "🍫", title: "Dark chocolate", desc: "Rich, dramatic, and a little fancy.", color: "purple" },
+          { emoji: "🍓", title: "Chocolate strawberries", desc: "Cute, sweet, and photo-ready.", color: "pink" },
+          { emoji: "🥨", title: "Pretzels", desc: "Crunchy, salty, and perfectly balanced.", color: "blue" }
+        ]
+      },
+      {
+        text: "Which breakfast wins your heart?",
+        answers: [
+          { emoji: "🥞", title: "Pancakes with syrup", desc: "Soft, sweet, and weekend-perfect.", color: "pink" },
+          { emoji: "🥑", title: "Avocado toast", desc: "Fresh, green, and stylishly simple.", color: "green" },
+          { emoji: "🫐", title: "Blueberry yogurt bowl", desc: "Cool, creamy, and calm.", color: "blue" },
+          { emoji: "🥐", title: "Chocolate croissant", desc: "Elegant, flaky, and indulgent.", color: "purple" }
+        ]
+      },
+      {
+        text: "At a taco bar, you reach for...",
+        answers: [
+          { emoji: "🌮", title: "Crunchy shells", desc: "Loud, fun, and full of texture.", color: "yellow" },
+          { emoji: "🥬", title: "Fresh lettuce and lime", desc: "Clean, crisp, and refreshing.", color: "green" },
+          { emoji: "🧀", title: "Cheese and crema", desc: "Smooth, comforting, and crowd-pleasing.", color: "pink" },
+          { emoji: "🫘", title: "Black beans and smoky salsa", desc: "Deep flavor with a thoughtful twist.", color: "purple" }
+        ]
+      },
+      {
+        text: "Choose your perfect ice cream flavor.",
+        answers: [
+          { emoji: "🍓", title: "Strawberry swirl", desc: "Sweet, cheerful, and pretty.", color: "pink" },
+          { emoji: "🍋", title: "Lemon sorbet", desc: "Bright, zippy, and refreshing.", color: "yellow" },
+          { emoji: "🫐", title: "Blueberry cheesecake", desc: "Cool, creamy, and dreamy.", color: "blue" },
+          { emoji: "🍇", title: "Black raspberry", desc: "Bold, rich, and unusual.", color: "purple" }
+        ]
+      },
+      {
+        text: "Your favorite fries style is...",
+        answers: [
+          { emoji: "🍟", title: "Shoestring fries", desc: "Crispy, fast, and fun.", color: "yellow" },
+          { emoji: "🥔", title: "Garlic parmesan wedges", desc: "Comforting with a fancy edge.", color: "purple" },
+          { emoji: "🌿", title: "Herby sweet potato fries", desc: "Fresh, colorful, and balanced.", color: "green" },
+          { emoji: "🧂", title: "Classic salted fries", desc: "Simple, reliable, and satisfying.", color: "blue" }
+        ]
+      },
+      {
+        text: "Pick a drink to sip with lunch.",
+        answers: [
+          { emoji: "🧋", title: "Strawberry bubble tea", desc: "Sweet, cute, and fun to customize.", color: "pink" },
+          { emoji: "🍋", title: "Sparkling lemonade", desc: "Bubbly, bright, and energetic.", color: "yellow" },
+          { emoji: "🥒", title: "Cucumber mint water", desc: "Cool, fresh, and calm.", color: "green" },
+          { emoji: "🫐", title: "Blueberry iced tea", desc: "Refreshing with a soft twist.", color: "blue" }
+        ]
+      },
+      {
+        text: "Which pasta dish sounds best?",
+        answers: [
+          { emoji: "🍝", title: "Creamy fettuccine", desc: "Rich, comforting, and luxurious.", color: "purple" },
+          { emoji: "🍅", title: "Tomato basil spaghetti", desc: "Bright, simple, and full of life.", color: "green" },
+          { emoji: "🧀", title: "Mac and cheese", desc: "Warm, nostalgic, and lovable.", color: "pink" },
+          { emoji: "🌶️", title: "Spicy arrabbiata", desc: "Bold, punchy, and exciting.", color: "yellow" }
+        ]
+      },
+      {
+        text: "At a bakery, you choose...",
+        answers: [
+          { emoji: "🧁", title: "Pink frosted cupcake", desc: "Cute, sweet, and celebratory.", color: "pink" },
+          { emoji: "🍞", title: "Herb focaccia", desc: "Savory, fresh, and grounded.", color: "green" },
+          { emoji: "🥧", title: "Blueberry hand pie", desc: "Cozy, calm, and just unique enough.", color: "blue" },
+          { emoji: "🍮", title: "Chocolate tart", desc: "Smooth, rich, and dramatic.", color: "purple" }
+        ]
+      },
+      {
+        text: "Your soup personality is...",
+        answers: [
+          { emoji: "🍜", title: "Spicy ramen", desc: "Adventurous and full of energy.", color: "yellow" },
+          { emoji: "🥣", title: "Tomato soup", desc: "Warm, classic, and sweetly comforting.", color: "pink" },
+          { emoji: "🍲", title: "Minestrone", desc: "Colorful, nourishing, and balanced.", color: "green" },
+          { emoji: "🧅", title: "French onion soup", desc: "Deep, cozy, and a little elegant.", color: "purple" }
+        ]
+      },
+      {
+        text: "Choose a candy besides gum.",
+        answers: [
+          { emoji: "🍬", title: "Sour gummies", desc: "Tangy, bright, and bold.", color: "yellow" },
+          { emoji: "🍭", title: "Heart lollipop", desc: "Sweet, playful, and charming.", color: "pink" },
+          { emoji: "🍫", title: "Chocolate truffles", desc: "Rich, smooth, and refined.", color: "purple" },
+          { emoji: "🧊", title: "Mint candies", desc: "Cool, clean, and refreshing.", color: "green" }
+        ]
+      },
+      {
+        text: "Pick a fruit plate.",
+        answers: [
+          { emoji: "🍓", title: "Strawberries and cherries", desc: "Romantic, sweet, and bright.", color: "pink" },
+          { emoji: "🍊", title: "Mango and oranges", desc: "Sunny, juicy, and energetic.", color: "yellow" },
+          { emoji: "🫐", title: "Blueberries and blackberries", desc: "Cool, thoughtful, and calm.", color: "blue" },
+          { emoji: "🥝", title: "Kiwi and green grapes", desc: "Fresh, crisp, and cheerful.", color: "green" }
+        ]
+      },
+      {
+        text: "Which sandwich are you ordering?",
+        answers: [
+          { emoji: "🥪", title: "Turkey with cranberry", desc: "Sweet-savory and friendly.", color: "pink" },
+          { emoji: "🥙", title: "Veggie pita", desc: "Fresh, colorful, and balanced.", color: "green" },
+          { emoji: "🧀", title: "Grilled cheese", desc: "Cozy, classic, and loyal.", color: "blue" },
+          { emoji: "🥖", title: "Brie and fig baguette", desc: "Elegant, bold, and stylish.", color: "purple" }
+        ]
+      },
+      {
+        text: "Choose your party appetizer.",
+        answers: [
+          { emoji: "🧀", title: "Cheese board", desc: "Fancy, layered, and impressive.", color: "purple" },
+          { emoji: "🥟", title: "Dumplings", desc: "Soft, comforting, and shareable.", color: "blue" },
+          { emoji: "🥗", title: "Caprese skewers", desc: "Fresh, bright, and pretty.", color: "green" },
+          { emoji: "🌽", title: "Elote cups", desc: "Fun, bold, and flavorful.", color: "yellow" }
+        ]
+      },
+      {
+        text: "Pick a late-night craving.",
+        answers: [
+          { emoji: "🍕", title: "Cold pizza", desc: "Classic chaos in the best way.", color: "yellow" },
+          { emoji: "🍪", title: "Warm cookies", desc: "Sweet, cozy, and lovable.", color: "pink" },
+          { emoji: "🍵", title: "Matcha latte", desc: "Calm, green, and focused.", color: "green" },
+          { emoji: "🍫", title: "Chocolate mousse", desc: "Dramatic, rich, and dreamy.", color: "purple" }
+        ]
+      },
+      {
+        text: "Which salad actually sounds exciting?",
+        answers: [
+          { emoji: "🥗", title: "Strawberry spinach salad", desc: "Sweet, pretty, and fresh.", color: "pink" },
+          { emoji: "🥒", title: "Greek cucumber salad", desc: "Cool, crisp, and balanced.", color: "green" },
+          { emoji: "🍋", title: "Citrus avocado salad", desc: "Bright, tangy, and sunny.", color: "yellow" },
+          { emoji: "🫐", title: "Blue cheese pear salad", desc: "Unique, stylish, and complex.", color: "blue" }
+        ]
+      },
+      {
+        text: "Your ideal cereal is...",
+        answers: [
+          { emoji: "🌈", title: "Rainbow marshmallow cereal", desc: "Colorful, sweet, and playful.", color: "pink" },
+          { emoji: "🍯", title: "Honey oat crunch", desc: "Golden, happy, and practical.", color: "yellow" },
+          { emoji: "🥣", title: "Blueberry almond granola", desc: "Cool, thoughtful, and textured.", color: "blue" },
+          { emoji: "🍫", title: "Chocolate clusters", desc: "Rich, cozy, and indulgent.", color: "purple" }
+        ]
+      },
+      {
+        text: "Pick a dip for chips.",
+        answers: [
+          { emoji: "🥑", title: "Guacamole", desc: "Fresh, green, and satisfying.", color: "green" },
+          { emoji: "🧀", title: "Queso", desc: "Warm, social, and fun.", color: "pink" },
+          { emoji: "🌶️", title: "Spicy salsa", desc: "Bold, bright, and lively.", color: "yellow" },
+          { emoji: "🧄", title: "Roasted garlic dip", desc: "Savory, deep, and memorable.", color: "purple" }
+        ]
+      },
+      {
+        text: "Choose a donut flavor.",
+        answers: [
+          { emoji: "🍩", title: "Pink sprinkle", desc: "Cute, fun, and iconic.", color: "pink" },
+          { emoji: "🍋", title: "Lemon glazed", desc: "Bright, sweet, and punchy.", color: "yellow" },
+          { emoji: "🫐", title: "Blueberry cake", desc: "Soft, calm, and cozy.", color: "blue" },
+          { emoji: "🍇", title: "Grape jelly filled", desc: "Bold, nostalgic, and unexpected.", color: "purple" }
+        ]
+      },
+      {
+        text: "For your final food choice, pick a feast vibe.",
+        answers: [
+          { emoji: "🍱", title: "Colorful sushi box", desc: "Fresh, neat, and beautifully balanced.", color: "green" },
+          { emoji: "🍔", title: "Burger and fries", desc: "Big, fun, and satisfying.", color: "yellow" },
+          { emoji: "🍰", title: "Tea party desserts", desc: "Sweet, charming, and fancy.", color: "pink" },
+          { emoji: "🍛", title: "Rich curry dinner", desc: "Warm, layered, and deeply flavorful.", color: "purple" }
+        ]
+      }
+    ];
+
+    const startButton = document.getElementById("startQuiz");
+    const quizSection = document.getElementById("quiz");
+    const resultSection = document.getElementById("result");
+    const questionText = document.getElementById("questionText");
+    const answersEl = document.getElementById("answers");
+    const questionCounter = document.getElementById("questionCounter");
+    const progressPercent = document.getElementById("progressPercent");
+    const progressFill = document.getElementById("progressFill");
+    const backButton = document.getElementById("backButton");
+    const restartSmall = document.getElementById("restartSmall");
+    const retakeButton = document.getElementById("retakeButton");
+    const copyButton = document.getElementById("copyButton");
+    const copyNotice = document.getElementById("copyNotice");
+    const resultCard = document.getElementById("resultCard");
+    const resultTitle = document.getElementById("resultTitle");
+    const resultDescription = document.getElementById("resultDescription");
+    const traitGrid = document.getElementById("traitGrid");
+    const gumPicture = document.getElementById("bubblegumPicture");
+
+    let currentQuestionIndex = 0;
+    let selections = [];
+
+    function startQuiz() {
+      currentQuestionIndex = 0;
+      selections = [];
+      resultSection.classList.remove("active");
+      quizSection.classList.add("active");
+      renderQuestion();
+      quizSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function renderQuestion() {
+      const question = questions[currentQuestionIndex];
+      const total = questions.length;
+      const number = currentQuestionIndex + 1;
+      const percent = Math.round((number / total) * 100);
+
+      questionText.textContent = question.text;
+      questionCounter.textContent = `Question ${number} of ${total}`;
+      progressPercent.textContent = `${percent}%`;
+      progressFill.style.width = `${percent}%`;
+      backButton.classList.toggle("show", currentQuestionIndex > 0);
+
+      answersEl.innerHTML = "";
+      question.answers.forEach((answer) => {
+        const button = document.createElement("button");
+        button.className = "answer-btn";
+        button.type = "button";
+        button.innerHTML = `
+          <span class="answer-emoji" aria-hidden="true">${answer.emoji}</span>
+          <span class="answer-title">${answer.title}</span>
+          <span class="answer-desc">${answer.desc}</span>
+        `;
+        button.addEventListener("click", () => chooseAnswer(answer.color));
+        answersEl.appendChild(button);
+      });
+    }
+
+    function chooseAnswer(color) {
+      selections[currentQuestionIndex] = color;
+
+      if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex += 1;
+        renderQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function goBack() {
+      if (currentQuestionIndex === 0) return;
+      currentQuestionIndex -= 1;
+      renderQuestion();
+    }
+
+    function calculateResult() {
+      const scores = { pink: 0, blue: 0, green: 0, yellow: 0, purple: 0 };
+      selections.forEach((color) => {
+        if (scores[color] !== undefined) scores[color] += 1;
+      });
+
+      const priority = ["pink", "blue", "green", "yellow", "purple"];
+      return priority.reduce((winner, color) => {
+        if (scores[color] > scores[winner]) return color;
+        return winner;
+      }, "pink");
+    }
+
+    function showResult() {
+      const colorKey = calculateResult();
+      const result = results[colorKey];
+
+      quizSection.classList.remove("active");
+      resultSection.classList.add("active");
+
+      resultTitle.textContent = result.name;
+      resultDescription.textContent = result.description;
+      traitGrid.innerHTML = result.traits.map((trait) => `<span class="trait">${trait}</span>`).join("");
+
+      gumPicture.style.setProperty("--gum-light", result.light);
+      gumPicture.style.setProperty("--gum-main", result.main);
+      gumPicture.style.setProperty("--gum-dark", result.dark);
+      resultCard.style.setProperty("--result-glow", result.glow);
+      resultCard.style.setProperty("--result-shadow", result.shadow);
+
+      copyNotice.classList.add("hidden");
+      resultSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    async function copyResult() {
+      const text = `My bubblegum personality color is ${resultTitle.textContent}! Take the quiz to find yours.`;
+      try {
+        await navigator.clipboard.writeText(text);
+        copyNotice.classList.remove("hidden");
+      } catch (error) {
+        copyNotice.textContent = text;
+        copyNotice.classList.remove("hidden");
+      }
+    }
+
+    startButton.addEventListener("click", startQuiz);
+    backButton.addEventListener("click", goBack);
+    restartSmall.addEventListener("click", startQuiz);
+    retakeButton.addEventListener("click", startQuiz);
+    copyButton.addEventListener("click", copyResult);
+  </script>
+</body>
+</html>
