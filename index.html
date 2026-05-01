@@ -308,6 +308,8 @@
     .mini-gum:nth-child(3) { --gum: linear-gradient(145deg, #9df2ba, #35cc7c); bottom: 14%; right: 12%; animation-delay: -0.7s; }
     .mini-gum:nth-child(4) { --gum: linear-gradient(145deg, #c4a1ff, #8759ff); bottom: 9%; left: 10%; animation-delay: -1.9s; }
     .mini-gum:nth-child(5) { --gum: linear-gradient(145deg, #ffb3d8, #ff4faf); top: 27%; left: 0; animation-delay: -0.3s; }
+    .mini-gum:nth-child(6) { --gum: linear-gradient(145deg, #c79664, #7a4728); top: 55%; left: 2%; animation-delay: -1.1s; }
+    .mini-gum:nth-child(7) { --gum: linear-gradient(145deg, #d9dde4, #7d8490); top: 56%; right: 0; animation-delay: -2.7s; }
 
     @keyframes bob {
       0%, 100% { transform: translateY(0) scale(1); }
@@ -644,6 +646,74 @@
       line-height: 1.55;
     }
 
+    .easter-egg-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: none;
+      place-items: center;
+      padding: 20px;
+      background: rgba(48, 27, 63, 0.38);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .easter-egg-modal.show {
+      display: grid;
+    }
+
+    .egg-card {
+      width: min(640px, 100%);
+      padding: clamp(26px, 5vw, 46px);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .egg-card::before {
+      content: "🍬 ✨ 🍭 ✨ 🍫";
+      display: block;
+      font-size: clamp(2rem, 7vw, 4rem);
+      margin-bottom: 14px;
+      animation: bob 2.6s ease-in-out infinite;
+    }
+
+    .egg-card h2 {
+      margin: 0 0 14px;
+      font-size: clamp(2rem, 7vw, 4.5rem);
+      line-height: 0.92;
+      letter-spacing: -0.06em;
+    }
+
+    .egg-card p {
+      margin: 0 auto 22px;
+      max-width: 500px;
+      color: var(--muted);
+      font-size: 1.1rem;
+      line-height: 1.65;
+      font-weight: 750;
+    }
+
+    .niece-names {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 22px 0 26px;
+    }
+
+    .niece-name {
+      padding: 12px 16px;
+      border-radius: 999px;
+      color: white;
+      font-weight: 1000;
+      box-shadow: 0 14px 30px rgba(92, 25, 112, 0.15);
+    }
+
+    .niece-name:nth-child(1) { background: linear-gradient(135deg, #ff4faf, #ff95cc); }
+    .niece-name:nth-child(2) { background: linear-gradient(135deg, #8d5cff, #2cc7ef); }
+    .niece-name:nth-child(3) { background: linear-gradient(135deg, #ffd23f, #3bd483); }
+
     .hidden {
       display: none !important;
     }
@@ -722,7 +792,7 @@
   <main class="page-shell">
     <section class="hero" id="home">
       <div class="hero-copy glass-card">
-        <div class="eyebrow"><span class="sparkle">✦</span> Food Mood Quiz</div>
+        <div class="eyebrow"><span class="sparkle">✦</span> The Big Quiz</div>
         <h1>Which <span class="gradient-text">bubblegum color</span> suits your personality?</h1>
         <p>
           Answer 20 tasty questions about pizza, snacks, desserts, drinks, and comfort foods.
@@ -733,7 +803,7 @@
         </div>
         <div class="stats-row" aria-label="Quiz details">
           <div class="stat"><strong>20</strong><span>Food picks</span></div>
-          <div class="stat"><strong>5</strong><span>Bubblegum colors</span></div>
+          <div class="stat"><strong>7</strong><span>Bubblegum colors</span></div>
           <div class="stat"><strong>1</strong><span>Personality match</span></div>
         </div>
       </div>
@@ -745,7 +815,9 @@
           <div class="mini-gum"></div>
           <div class="mini-gum"></div>
           <div class="mini-gum"></div>
-          <div class="gum-center"></div>
+          <div class="mini-gum"></div>
+          <div class="mini-gum"></div>
+          <div class="gum-center" id="secretGum" title="Psst... this gum has a secret!"></div>
         </div>
       </div>
     </section>
@@ -793,6 +865,22 @@
         </div>
       </div>
     </section>
+
+    <div class="easter-egg-modal" id="easterEggModal" aria-hidden="true">
+      <div class="egg-card glass-card" role="dialog" aria-modal="true" aria-labelledby="eggTitle">
+        <h2 class="gradient-text" id="eggTitle">Secret Sprinkle Club!</h2>
+        <p>
+          Sophia, Alice, and Olivia found the hidden bubblegum portal.
+          Official club powers: extra giggles, excellent snack opinions, and rainbow-level imagination.
+        </p>
+        <div class="niece-names" aria-label="Secret club members">
+          <span class="niece-name">Sophia 🍓</span>
+          <span class="niece-name">Alice 🫐</span>
+          <span class="niece-name">Olivia 🍋</span>
+        </div>
+        <button class="btn btn-primary" id="closeEgg">Back to the Quiz 🍬</button>
+      </div>
+    </div>
 
     <p class="footer-note">Made for GitHub Pages • Fancy, food-powered, and bubblegum-bright</p>
   </main>
@@ -848,188 +936,268 @@
         shadow: "rgba(141, 92, 255, 0.34)",
         description: "You are stylish, thoughtful, and a little mysterious. You like foods with richness, drama, and comfort, and your vibe says you know exactly what you like without needing everyone else to agree.",
         traits: ["Stylish", "Deep", "Original", "Cozy", "Confident"]
+      },
+      brown: {
+        name: "Chocolate Brown",
+        light: "#d9a56f",
+        main: "#8b5632",
+        dark: "#4d2a18",
+        glow: "rgba(139, 86, 50, 0.38)",
+        shadow: "rgba(92, 47, 25, 0.34)",
+        description: "You are grounded, loyal, and quietly comforting. You love foods that feel warm, rich, roasted, or homemade, and people trust you because your personality feels steady, sincere, and real.",
+        traits: ["Grounded", "Loyal", "Comforting", "Honest", "Dependable"]
+      },
+      gray: {
+        name: "Silver Gray",
+        light: "#eceff4",
+        main: "#9aa1ad",
+        dark: "#5f6670",
+        glow: "rgba(154, 161, 173, 0.4)",
+        shadow: "rgba(86, 95, 108, 0.3)",
+        description: "You are calm, observant, and effortlessly cool. You like clean flavors, subtle details, and foods that are simple but well-made, giving you a refined personality that never needs to shout.",
+        traits: ["Calm", "Observant", "Minimal", "Cool", "Refined"]
       }
     };
 
     const questions = [
       {
-        text: "Your dream pizza topping combo is...",
+        text: "A tiny pizza chef mouse asks you for your dream topping. You say...",
         answers: [
-          { emoji: "🍍", title: "Pineapple and ham", desc: "Sweet, salty, and controversial in a fun way.", color: "yellow" },
-          { emoji: "🍄", title: "Mushrooms and herbs", desc: "Earthy, cozy, and a little sophisticated.", color: "purple" },
-          { emoji: "🧀", title: "Extra cheese", desc: "Classic comfort with maximum melt.", color: "pink" },
-          { emoji: "🌶️", title: "Peppers and spice", desc: "Bright flavor with a confident kick.", color: "green" }
+          { emoji: "🧀", title: "A cheese blanket", desc: "So melty the pizza needs a nap.", color: "pink" },
+          { emoji: "🫐", title: "Blueberry mystery drizzle", desc: "Weird? Yes. Magical? Also yes.", color: "blue" },
+          { emoji: "🌿", title: "Basil confetti", desc: "Fresh little leaves having a party.", color: "green" },
+          { emoji: "🍍", title: "Pineapple sunshine chunks", desc: "Tiny tropical trampolines for your tastebuds.", color: "yellow" },
+          { emoji: "🍄", title: "Wizard mushrooms", desc: "They look like they know a secret spell.", color: "purple" },
+          { emoji: "🍖", title: "BBQ chicken treasure", desc: "Smoky, saucy, and ready for adventure.", color: "brown" },
+          { emoji: "🫒", title: "Olive ninja slices", desc: "Sneaky, salty, and very serious.", color: "gray" }
         ]
       },
       {
-        text: "Pick the snack you would bring to a movie night.",
+        text: "Your lunchbox starts dancing. What snack is making it wiggle?",
         answers: [
-          { emoji: "🍿", title: "Buttery popcorn", desc: "Crispy, golden, and impossible to stop eating.", color: "yellow" },
-          { emoji: "🍫", title: "Dark chocolate", desc: "Rich, dramatic, and a little fancy.", color: "purple" },
-          { emoji: "🍓", title: "Chocolate strawberries", desc: "Cute, sweet, and photo-ready.", color: "pink" },
-          { emoji: "🥨", title: "Pretzels", desc: "Crunchy, salty, and perfectly balanced.", color: "blue" }
+          { emoji: "🍓", title: "Strawberry sparkle bites", desc: "They practically sing show tunes.", color: "pink" },
+          { emoji: "🥨", title: "Pretzel twist tornadoes", desc: "Crunchy loops doing gymnastics.", color: "blue" },
+          { emoji: "🥒", title: "Cucumber moon coins", desc: "Cool circles from Planet Crunch.", color: "green" },
+          { emoji: "🍿", title: "Popcorn cannonballs", desc: "Pop! Pop! Snack attack!", color: "yellow" },
+          { emoji: "🍫", title: "Dark chocolate dragon squares", desc: "Fancy enough for a tiny castle.", color: "purple" },
+          { emoji: "🥜", title: "Roasted peanut pebbles", desc: "Toasty little snack rocks.", color: "brown" },
+          { emoji: "🧂", title: "Sea-salt cracker clouds", desc: "Crisp, calm, and cloud-shaped in spirit.", color: "gray" }
         ]
       },
       {
-        text: "Which breakfast wins your heart?",
+        text: "Breakfast cereal forms a rock band. Which bowl gets the microphone?",
         answers: [
-          { emoji: "🥞", title: "Pancakes with syrup", desc: "Soft, sweet, and weekend-perfect.", color: "pink" },
-          { emoji: "🥑", title: "Avocado toast", desc: "Fresh, green, and stylishly simple.", color: "green" },
-          { emoji: "🫐", title: "Blueberry yogurt bowl", desc: "Cool, creamy, and calm.", color: "blue" },
-          { emoji: "🥐", title: "Chocolate croissant", desc: "Elegant, flaky, and indulgent.", color: "purple" }
+          { emoji: "🌈", title: "Rainbow marshmallow crunch", desc: "Lead singer energy, obviously.", color: "pink" },
+          { emoji: "🫐", title: "Blueberry galaxy granola", desc: "Plays keyboard on a comet.", color: "blue" },
+          { emoji: "🥝", title: "Kiwi crunch flakes", desc: "The drummer has green hair.", color: "green" },
+          { emoji: "🍯", title: "Honey sunshine hoops", desc: "Every song has a kazoo solo.", color: "yellow" },
+          { emoji: "🍫", title: "Chocolate thunder clusters", desc: "Very dramatic guitar solo.", color: "purple" },
+          { emoji: "🥜", title: "Peanut butter boom cereal", desc: "Bass guitar made of toast.", color: "brown" },
+          { emoji: "🥣", title: "Bran flake whisper band", desc: "Their hit song is called Quiet Crunch.", color: "gray" }
         ]
       },
       {
-        text: "At a taco bar, you reach for...",
+        text: "A taco wearing sunglasses says, 'Fill me with greatness!' You choose...",
         answers: [
-          { emoji: "🌮", title: "Crunchy shells", desc: "Loud, fun, and full of texture.", color: "yellow" },
-          { emoji: "🥬", title: "Fresh lettuce and lime", desc: "Clean, crisp, and refreshing.", color: "green" },
-          { emoji: "🧀", title: "Cheese and crema", desc: "Smooth, comforting, and crowd-pleasing.", color: "pink" },
-          { emoji: "🫘", title: "Black beans and smoky salsa", desc: "Deep flavor with a thoughtful twist.", color: "purple" }
+          { emoji: "🧀", title: "Cheese avalanche", desc: "It is deliciously unsafe for tiny taco skiers.", color: "pink" },
+          { emoji: "🫘", title: "Bean bounce house", desc: "Soft, cozy, and full of bean boings.", color: "blue" },
+          { emoji: "🥬", title: "Lettuce wiggle ribbons", desc: "Fresh crunch with jazz hands.", color: "green" },
+          { emoji: "🌶️", title: "Salsa fireworks", desc: "Boom! Zap! Taco party!", color: "yellow" },
+          { emoji: "🧅", title: "Mysterious purple onions", desc: "They might be royal. Hard to say.", color: "purple" },
+          { emoji: "🥩", title: "Carne asada armor", desc: "Strong taco. Brave taco. Yum taco.", color: "brown" },
+          { emoji: "🧄", title: "Garlic ghost sprinkles", desc: "Boo! But make it tasty.", color: "gray" }
         ]
       },
       {
-        text: "Choose your perfect ice cream flavor.",
+        text: "An ice cream truck lands on the moon. What flavor do you order?",
         answers: [
-          { emoji: "🍓", title: "Strawberry swirl", desc: "Sweet, cheerful, and pretty.", color: "pink" },
-          { emoji: "🍋", title: "Lemon sorbet", desc: "Bright, zippy, and refreshing.", color: "yellow" },
-          { emoji: "🫐", title: "Blueberry cheesecake", desc: "Cool, creamy, and dreamy.", color: "blue" },
-          { emoji: "🍇", title: "Black raspberry", desc: "Bold, rich, and unusual.", color: "purple" }
+          { emoji: "🍓", title: "Strawberry moon swirl", desc: "Pink enough to make aliens clap.", color: "pink" },
+          { emoji: "🫐", title: "Blueberry comet crunch", desc: "Tastes like a chilly space hug.", color: "blue" },
+          { emoji: "🌱", title: "Mint meteor chip", desc: "Fresh breath for astronauts.", color: "green" },
+          { emoji: "🍋", title: "Lemon rocket sorbet", desc: "Zoomy, zingy, and very yellow.", color: "yellow" },
+          { emoji: "🍇", title: "Grape galaxy scoop", desc: "Deep-space drama in a cone.", color: "purple" },
+          { emoji: "🍫", title: "Chocolate crater fudge", desc: "Rich enough to have gravity.", color: "brown" },
+          { emoji: "🥥", title: "Vanilla moon dust", desc: "Soft, simple, and spacey.", color: "gray" }
         ]
       },
       {
-        text: "Your favorite fries style is...",
+        text: "Your fries enter a talent show. Which act wins?",
         answers: [
-          { emoji: "🍟", title: "Shoestring fries", desc: "Crispy, fast, and fun.", color: "yellow" },
-          { emoji: "🥔", title: "Garlic parmesan wedges", desc: "Comforting with a fancy edge.", color: "purple" },
-          { emoji: "🌿", title: "Herby sweet potato fries", desc: "Fresh, colorful, and balanced.", color: "green" },
-          { emoji: "🧂", title: "Classic salted fries", desc: "Simple, reliable, and satisfying.", color: "blue" }
+          { emoji: "🧀", title: "Cheesy fry limbo", desc: "How low can that cheese go?", color: "pink" },
+          { emoji: "🧂", title: "Classic salt tap dance", desc: "Tiny crunchy shoes included.", color: "blue" },
+          { emoji: "🌿", title: "Herby fry cartwheels", desc: "Fresh flips. Excellent landing.", color: "green" },
+          { emoji: "🍟", title: "Shoestring fry cannon", desc: "Do not try this in the cafeteria.", color: "yellow" },
+          { emoji: "🧄", title: "Garlic parmesan opera", desc: "Loud, fancy, and a little stinky.", color: "purple" },
+          { emoji: "🍖", title: "BBQ fry bear hug", desc: "Smoky and friendly.", color: "brown" },
+          { emoji: "🍄", title: "Truffle fry magic trick", desc: "Now you see fries. Now you still see fries.", color: "gray" }
         ]
       },
       {
-        text: "Pick a drink to sip with lunch.",
+        text: "A magical straw can only sip one drink forever. What do you give it?",
         answers: [
-          { emoji: "🧋", title: "Strawberry bubble tea", desc: "Sweet, cute, and fun to customize.", color: "pink" },
-          { emoji: "🍋", title: "Sparkling lemonade", desc: "Bubbly, bright, and energetic.", color: "yellow" },
-          { emoji: "🥒", title: "Cucumber mint water", desc: "Cool, fresh, and calm.", color: "green" },
-          { emoji: "🫐", title: "Blueberry iced tea", desc: "Refreshing with a soft twist.", color: "blue" }
+          { emoji: "🧋", title: "Strawberry bubble tea", desc: "Boba pearls doing cannonballs.", color: "pink" },
+          { emoji: "🫐", title: "Blueberry iced tea", desc: "Cooler than a penguin in sunglasses.", color: "blue" },
+          { emoji: "🥒", title: "Cucumber mint water", desc: "Spa day for your mouth.", color: "green" },
+          { emoji: "🍋", title: "Sparkly lemonade", desc: "Tiny lemon fireworks in a cup.", color: "yellow" },
+          { emoji: "🍇", title: "Grape fizz potion", desc: "Might turn your tongue into royalty.", color: "purple" },
+          { emoji: "☕", title: "Iced coffee zoom juice", desc: "For grown-up goblins and sleepy bears.", color: "brown" },
+          { emoji: "🥛", title: "Chilly oat milk", desc: "Smooth like a cloud doing yoga.", color: "gray" }
         ]
       },
       {
-        text: "Which pasta dish sounds best?",
+        text: "Your spaghetti turns into a roller coaster. Which sauce rides in front?",
         answers: [
-          { emoji: "🍝", title: "Creamy fettuccine", desc: "Rich, comforting, and luxurious.", color: "purple" },
-          { emoji: "🍅", title: "Tomato basil spaghetti", desc: "Bright, simple, and full of life.", color: "green" },
-          { emoji: "🧀", title: "Mac and cheese", desc: "Warm, nostalgic, and lovable.", color: "pink" },
-          { emoji: "🌶️", title: "Spicy arrabbiata", desc: "Bold, punchy, and exciting.", color: "yellow" }
+          { emoji: "🧀", title: "Mac-and-cheese lava", desc: "Whee! The cheese has no brakes.", color: "pink" },
+          { emoji: "🫐", title: "Blue cheese surprise", desc: "Only brave noodles allowed.", color: "blue" },
+          { emoji: "🍅", title: "Tomato basil zoom sauce", desc: "Fresh and fast with a basil cape.", color: "green" },
+          { emoji: "🌶️", title: "Spicy volcano sauce", desc: "Noodles screaming with joy.", color: "yellow" },
+          { emoji: "🍝", title: "Fancy cream swirl", desc: "Wears sunglasses indoors.", color: "purple" },
+          { emoji: "🍄", title: "Mushroom forest ragu", desc: "Noodles got lost and loved it.", color: "brown" },
+          { emoji: "🧂", title: "Cacio e pepe whisper", desc: "Tiny pepper sneezes included.", color: "gray" }
         ]
       },
       {
-        text: "At a bakery, you choose...",
+        text: "A cupcake whispers, 'Choose my bakery bestie!' Who joins the squad?",
         answers: [
-          { emoji: "🧁", title: "Pink frosted cupcake", desc: "Cute, sweet, and celebratory.", color: "pink" },
-          { emoji: "🍞", title: "Herb focaccia", desc: "Savory, fresh, and grounded.", color: "green" },
-          { emoji: "🥧", title: "Blueberry hand pie", desc: "Cozy, calm, and just unique enough.", color: "blue" },
-          { emoji: "🍮", title: "Chocolate tart", desc: "Smooth, rich, and dramatic.", color: "purple" }
+          { emoji: "🧁", title: "Pink sprinkle cupcake", desc: "Already packed a glitter backpack.", color: "pink" },
+          { emoji: "🥧", title: "Blueberry hand pie", desc: "Pocket-sized pie pal.", color: "blue" },
+          { emoji: "🍞", title: "Herb focaccia pillow", desc: "Squishy, savory, and fresh.", color: "green" },
+          { emoji: "🍋", title: "Lemon bar laser beam", desc: "Pew pew, but tangy.", color: "yellow" },
+          { emoji: "🍮", title: "Chocolate tart with a cape", desc: "Dessert superhero behavior.", color: "purple" },
+          { emoji: "🍪", title: "Molasses cookie grandpa", desc: "Tells excellent snack stories.", color: "brown" },
+          { emoji: "🥖", title: "Sourdough loaf detective", desc: "Solves crimes with crumbs.", color: "gray" }
         ]
       },
       {
-        text: "Your soup personality is...",
+        text: "A snowman asks for soup in July. What soup saves the day?",
         answers: [
-          { emoji: "🍜", title: "Spicy ramen", desc: "Adventurous and full of energy.", color: "yellow" },
-          { emoji: "🥣", title: "Tomato soup", desc: "Warm, classic, and sweetly comforting.", color: "pink" },
-          { emoji: "🍲", title: "Minestrone", desc: "Colorful, nourishing, and balanced.", color: "green" },
-          { emoji: "🧅", title: "French onion soup", desc: "Deep, cozy, and a little elegant.", color: "purple" }
+          { emoji: "🥣", title: "Tomato soup floaties", desc: "Warm enough to melt hearts, not snowmen.", color: "pink" },
+          { emoji: "🫐", title: "Cool blueberry gazpacho", desc: "The snowman says, 'Interesting.'", color: "blue" },
+          { emoji: "🍲", title: "Veggie garden soup", desc: "A whole garden doing the backstroke.", color: "green" },
+          { emoji: "🍜", title: "Spicy ramen noodles", desc: "Noodles with karate kicks.", color: "yellow" },
+          { emoji: "🧅", title: "French onion drama soup", desc: "The cheese wears a tiny crown.", color: "purple" },
+          { emoji: "🍄", title: "Mushroom barley bear soup", desc: "Cozy enough for hibernation.", color: "brown" },
+          { emoji: "🥣", title: "Miso whisper broth", desc: "Quiet soup. Big feelings.", color: "gray" }
         ]
       },
       {
-        text: "Choose a candy besides gum.",
+        text: "A dragon has candy hiccups. Which candy fixes them?",
         answers: [
-          { emoji: "🍬", title: "Sour gummies", desc: "Tangy, bright, and bold.", color: "yellow" },
-          { emoji: "🍭", title: "Heart lollipop", desc: "Sweet, playful, and charming.", color: "pink" },
-          { emoji: "🍫", title: "Chocolate truffles", desc: "Rich, smooth, and refined.", color: "purple" },
-          { emoji: "🧊", title: "Mint candies", desc: "Cool, clean, and refreshing.", color: "green" }
+          { emoji: "🍭", title: "Heart lollipop shield", desc: "Blocks hiccups with cuteness.", color: "pink" },
+          { emoji: "🫐", title: "Blue raspberry fizzies", desc: "Turns hiccups into bubbles.", color: "blue" },
+          { emoji: "🧊", title: "Minty ice cubes", desc: "Dragon breath: refreshed.", color: "green" },
+          { emoji: "🍬", title: "Sour gummy lightning", desc: "Zap! Hiccup gone!", color: "yellow" },
+          { emoji: "🍫", title: "Fancy truffle treasure", desc: "Dragons love expensive snacks.", color: "purple" },
+          { emoji: "🍫", title: "Caramel chocolate rocks", desc: "Chewy dragon gold.", color: "brown" },
+          { emoji: "🥥", title: "Coconut cloud chews", desc: "Soft enough for dragon manners.", color: "gray" }
         ]
       },
       {
-        text: "Pick a fruit plate.",
+        text: "Your teddy bear picnic needs a fruit plate. What looks most picnic-y?",
         answers: [
-          { emoji: "🍓", title: "Strawberries and cherries", desc: "Romantic, sweet, and bright.", color: "pink" },
-          { emoji: "🍊", title: "Mango and oranges", desc: "Sunny, juicy, and energetic.", color: "yellow" },
-          { emoji: "🫐", title: "Blueberries and blackberries", desc: "Cool, thoughtful, and calm.", color: "blue" },
-          { emoji: "🥝", title: "Kiwi and green grapes", desc: "Fresh, crisp, and cheerful.", color: "green" }
+          { emoji: "🍓", title: "Strawberry heart pile", desc: "The teddy bears say, 'Awww.'", color: "pink" },
+          { emoji: "🫐", title: "Blueberry button mountain", desc: "Tiny blue buttons for snack overalls.", color: "blue" },
+          { emoji: "🥝", title: "Kiwi frisbee slices", desc: "Fresh, green, and ready to fly.", color: "green" },
+          { emoji: "🍊", title: "Orange sunshine wedges", desc: "Edible smiles.", color: "yellow" },
+          { emoji: "🍇", title: "Grape royal jewels", desc: "Teddy queen approved.", color: "purple" },
+          { emoji: "🍌", title: "Banana boomerangs", desc: "Do not actually throw them. Probably.", color: "brown" },
+          { emoji: "🍐", title: "Pear moon slices", desc: "Gentle, pale, and fancy-ish.", color: "gray" }
         ]
       },
       {
-        text: "Which sandwich are you ordering?",
+        text: "After recess, your sandwich wants a superhero name. Which one is it?",
         answers: [
-          { emoji: "🥪", title: "Turkey with cranberry", desc: "Sweet-savory and friendly.", color: "pink" },
-          { emoji: "🥙", title: "Veggie pita", desc: "Fresh, colorful, and balanced.", color: "green" },
-          { emoji: "🧀", title: "Grilled cheese", desc: "Cozy, classic, and loyal.", color: "blue" },
-          { emoji: "🥖", title: "Brie and fig baguette", desc: "Elegant, bold, and stylish.", color: "purple" }
+          { emoji: "🥪", title: "Captain Cranberry Turkey", desc: "Sweet, silly, and saves snack time.", color: "pink" },
+          { emoji: "🧀", title: "Grilled Cheese Glacier", desc: "Melty but somehow chill.", color: "blue" },
+          { emoji: "🥙", title: "The Veggie Pita Tornado", desc: "Fresh crunch flying everywhere.", color: "green" },
+          { emoji: "🍔", title: "Burger Boom-Boom", desc: "Loud lunch energy.", color: "yellow" },
+          { emoji: "🥖", title: "Brie-and-Fig Fancy Pants", desc: "Wears a cape and a tiny scarf.", color: "purple" },
+          { emoji: "🥩", title: "Roast Beef Boulder", desc: "Strong, steady, and sandwich-shaped.", color: "brown" },
+          { emoji: "🥒", title: "Swiss Cucumber Sneak", desc: "Quiet crunch, sneaky style.", color: "gray" }
         ]
       },
       {
-        text: "Choose your party appetizer.",
+        text: "A mermaid birthday party needs appetizers. What do you bring?",
         answers: [
-          { emoji: "🧀", title: "Cheese board", desc: "Fancy, layered, and impressive.", color: "purple" },
-          { emoji: "🥟", title: "Dumplings", desc: "Soft, comforting, and shareable.", color: "blue" },
-          { emoji: "🥗", title: "Caprese skewers", desc: "Fresh, bright, and pretty.", color: "green" },
-          { emoji: "🌽", title: "Elote cups", desc: "Fun, bold, and flavorful.", color: "yellow" }
+          { emoji: "🧀", title: "Cheese cubes on toothpick boats", desc: "Sail away, little snacks.", color: "pink" },
+          { emoji: "🥟", title: "Dumpling sea pillows", desc: "Squishy treasure from the snack reef.", color: "blue" },
+          { emoji: "🥗", title: "Caprese bubble skewers", desc: "Fresh pearls of yum.", color: "green" },
+          { emoji: "🌽", title: "Elote confetti cups", desc: "A party in every spoon.", color: "yellow" },
+          { emoji: "🧀", title: "Royal cheese board", desc: "Fancy enough for a sea castle.", color: "purple" },
+          { emoji: "🍄", title: "Stuffed mushroom submarines", desc: "Dive, dive, delicious dive!", color: "brown" },
+          { emoji: "🫓", title: "Hummus moon dip", desc: "Smooth snack lagoon.", color: "gray" }
         ]
       },
       {
-        text: "Pick a late-night craving.",
+        text: "You built a pajama fort. What midnight snack guards the entrance?",
         answers: [
-          { emoji: "🍕", title: "Cold pizza", desc: "Classic chaos in the best way.", color: "yellow" },
-          { emoji: "🍪", title: "Warm cookies", desc: "Sweet, cozy, and lovable.", color: "pink" },
-          { emoji: "🍵", title: "Matcha latte", desc: "Calm, green, and focused.", color: "green" },
-          { emoji: "🍫", title: "Chocolate mousse", desc: "Dramatic, rich, and dreamy.", color: "purple" }
+          { emoji: "🍪", title: "Warm cookie guards", desc: "They smell too good to be scary.", color: "pink" },
+          { emoji: "🫐", title: "Blueberry muffin trolls", desc: "Cute trolls. Crumbly trolls.", color: "blue" },
+          { emoji: "🍵", title: "Matcha marshmallow moat", desc: "Green, cozy, and mysterious.", color: "green" },
+          { emoji: "🍕", title: "Cold pizza dragon", desc: "A brave slice with sleepy eyes.", color: "yellow" },
+          { emoji: "🍫", title: "Chocolate mousse monster", desc: "Very fancy. Very wobbly.", color: "purple" },
+          { emoji: "🥜", title: "Peanut butter toast shield", desc: "Sticky protection mode activated.", color: "brown" },
+          { emoji: "🍚", title: "Rice ball ninja", desc: "Silent, snacky, and round.", color: "gray" }
         ]
       },
       {
-        text: "Which salad actually sounds exciting?",
+        text: "A dinosaur says salad is 'not scary enough.' Which salad changes its mind?",
         answers: [
-          { emoji: "🥗", title: "Strawberry spinach salad", desc: "Sweet, pretty, and fresh.", color: "pink" },
-          { emoji: "🥒", title: "Greek cucumber salad", desc: "Cool, crisp, and balanced.", color: "green" },
-          { emoji: "🍋", title: "Citrus avocado salad", desc: "Bright, tangy, and sunny.", color: "yellow" },
-          { emoji: "🫐", title: "Blue cheese pear salad", desc: "Unique, stylish, and complex.", color: "blue" }
+          { emoji: "🍓", title: "Strawberry spinach stomp salad", desc: "Sweet leaves with dinosaur footprints.", color: "pink" },
+          { emoji: "🫐", title: "Blue cheese roar salad", desc: "Tiny roar. Big flavor.", color: "blue" },
+          { emoji: "🥒", title: "Cucumber crunch-a-saurus", desc: "So crisp it echoes.", color: "green" },
+          { emoji: "🍋", title: "Citrus lightning salad", desc: "Zing! The dinosaur blinks twice.", color: "yellow" },
+          { emoji: "🍇", title: "Royal grape leaf pile", desc: "A salad wearing a crown.", color: "purple" },
+          { emoji: "🥜", title: "Walnut apple fossil salad", desc: "Crunchy ancient treasure.", color: "brown" },
+          { emoji: "🧀", title: "Caesar salad statue", desc: "Very classic. Very pose-worthy.", color: "gray" }
         ]
       },
       {
-        text: "Your ideal cereal is...",
+        text: "Your cereal spoon turns into a rocket. Where does it blast off?",
         answers: [
-          { emoji: "🌈", title: "Rainbow marshmallow cereal", desc: "Colorful, sweet, and playful.", color: "pink" },
-          { emoji: "🍯", title: "Honey oat crunch", desc: "Golden, happy, and practical.", color: "yellow" },
-          { emoji: "🥣", title: "Blueberry almond granola", desc: "Cool, thoughtful, and textured.", color: "blue" },
-          { emoji: "🍫", title: "Chocolate clusters", desc: "Rich, cozy, and indulgent.", color: "purple" }
+          { emoji: "🌈", title: "Marshmallow rainbow planet", desc: "Population: sprinkles.", color: "pink" },
+          { emoji: "🫐", title: "Blueberry asteroid belt", desc: "Buckle up for berry bumps.", color: "blue" },
+          { emoji: "🥝", title: "Green crunch jungle moon", desc: "Space monkeys probably live there.", color: "green" },
+          { emoji: "🍯", title: "Honey hoop sun", desc: "Sticky landing. Worth it.", color: "yellow" },
+          { emoji: "🍫", title: "Chocolate cluster black hole", desc: "No cereal escapes. None.", color: "purple" },
+          { emoji: "🥜", title: "Peanut butter meteor field", desc: "Nutty space traffic.", color: "brown" },
+          { emoji: "🥣", title: "Bran flake moon base", desc: "Very organized astronauts.", color: "gray" }
         ]
       },
       {
-        text: "Pick a dip for chips.",
+        text: "A chip cannon fires one chip into a dip pool. Splash! Which dip is it?",
         answers: [
-          { emoji: "🥑", title: "Guacamole", desc: "Fresh, green, and satisfying.", color: "green" },
-          { emoji: "🧀", title: "Queso", desc: "Warm, social, and fun.", color: "pink" },
-          { emoji: "🌶️", title: "Spicy salsa", desc: "Bold, bright, and lively.", color: "yellow" },
-          { emoji: "🧄", title: "Roasted garlic dip", desc: "Savory, deep, and memorable.", color: "purple" }
+          { emoji: "🧀", title: "Queso lava lagoon", desc: "The chip yells, 'Wheeeee!'", color: "pink" },
+          { emoji: "🫐", title: "Blue corn salsa splash", desc: "Cool, crunchy cannon science.", color: "blue" },
+          { emoji: "🥑", title: "Guacamole swamp", desc: "Friendly swamp. Good manners.", color: "green" },
+          { emoji: "🌶️", title: "Spicy salsa volcano", desc: "Tiny eruption, huge flavor.", color: "yellow" },
+          { emoji: "🧄", title: "Garlic dragon dip", desc: "Breath mint not included.", color: "purple" },
+          { emoji: "🫘", title: "Bean dip mudslide", desc: "Messy, cozy, and magnificent.", color: "brown" },
+          { emoji: "🥣", title: "Plain hummus moon pool", desc: "Smooth landing confirmed.", color: "gray" }
         ]
       },
       {
-        text: "Choose a donut flavor.",
+        text: "A donut robot asks for a flavor upgrade. You install...",
         answers: [
-          { emoji: "🍩", title: "Pink sprinkle", desc: "Cute, fun, and iconic.", color: "pink" },
-          { emoji: "🍋", title: "Lemon glazed", desc: "Bright, sweet, and punchy.", color: "yellow" },
-          { emoji: "🫐", title: "Blueberry cake", desc: "Soft, calm, and cozy.", color: "blue" },
-          { emoji: "🍇", title: "Grape jelly filled", desc: "Bold, nostalgic, and unexpected.", color: "purple" }
+          { emoji: "🍩", title: "Pink sprinkle buttons", desc: "Beep boop, extra cute.", color: "pink" },
+          { emoji: "🫐", title: "Blueberry booster rockets", desc: "Donut bot can now hover.", color: "blue" },
+          { emoji: "🍵", title: "Matcha laser glaze", desc: "Green beam of yum.", color: "green" },
+          { emoji: "🍋", title: "Lemon zap glaze", desc: "Zing circuits activated.", color: "yellow" },
+          { emoji: "🍇", title: "Grape jelly power core", desc: "Mysterious and wobbly.", color: "purple" },
+          { emoji: "🍫", title: "Chocolate old-fashioned armor", desc: "Sturdy donut technology.", color: "brown" },
+          { emoji: "🥥", title: "Powdered sugar snow mode", desc: "Quietly fabulous robot dust.", color: "gray" }
         ]
       },
       {
-        text: "For your final food choice, pick a feast vibe.",
+        text: "The Bubblegum Kingdom is having a feast. What dish do you bring to the royal table?",
         answers: [
-          { emoji: "🍱", title: "Colorful sushi box", desc: "Fresh, neat, and beautifully balanced.", color: "green" },
-          { emoji: "🍔", title: "Burger and fries", desc: "Big, fun, and satisfying.", color: "yellow" },
-          { emoji: "🍰", title: "Tea party desserts", desc: "Sweet, charming, and fancy.", color: "pink" },
-          { emoji: "🍛", title: "Rich curry dinner", desc: "Warm, layered, and deeply flavorful.", color: "purple" }
+          { emoji: "🍰", title: "Tea party cupcake tower", desc: "The royal forks are cheering.", color: "pink" },
+          { emoji: "🫐", title: "Blueberry pancake castle", desc: "Stacked higher than a tiny knight.", color: "blue" },
+          { emoji: "🍱", title: "Rainbow sushi treasure box", desc: "Neat, colorful, and fancy-fresh.", color: "green" },
+          { emoji: "🍔", title: "Burger-and-fries parade", desc: "The pickles are waving flags.", color: "yellow" },
+          { emoji: "🍛", title: "Royal purple curry", desc: "Warm, magical, and mysterious.", color: "purple" },
+          { emoji: "🍲", title: "Beef stew cauldron", desc: "Cozy enough for the whole kingdom.", color: "brown" },
+          { emoji: "🍙", title: "Rice ball crown jewels", desc: "Simple, shiny, and perfectly round.", color: "gray" }
         ]
       }
     ];
@@ -1047,6 +1215,9 @@
     const retakeButton = document.getElementById("retakeButton");
     const copyButton = document.getElementById("copyButton");
     const copyNotice = document.getElementById("copyNotice");
+    const secretGum = document.getElementById("secretGum");
+    const easterEggModal = document.getElementById("easterEggModal");
+    const closeEgg = document.getElementById("closeEgg");
     const resultCard = document.getElementById("resultCard");
     const resultTitle = document.getElementById("resultTitle");
     const resultDescription = document.getElementById("resultDescription");
@@ -1110,12 +1281,12 @@
     }
 
     function calculateResult() {
-      const scores = { pink: 0, blue: 0, green: 0, yellow: 0, purple: 0 };
+      const scores = { pink: 0, blue: 0, green: 0, yellow: 0, purple: 0, brown: 0, gray: 0 };
       selections.forEach((color) => {
         if (scores[color] !== undefined) scores[color] += 1;
       });
 
-      const priority = ["pink", "blue", "green", "yellow", "purple"];
+      const priority = ["pink", "blue", "green", "yellow", "purple", "brown", "gray"];
       return priority.reduce((winner, color) => {
         if (scores[color] > scores[winner]) return color;
         return winner;
@@ -1154,11 +1325,42 @@
       }
     }
 
+    let secretClicks = 0;
+    let secretTimer;
+
+    function showEasterEgg() {
+      easterEggModal.classList.add("show");
+      easterEggModal.setAttribute("aria-hidden", "false");
+    }
+
+    function hideEasterEgg() {
+      easterEggModal.classList.remove("show");
+      easterEggModal.setAttribute("aria-hidden", "true");
+    }
+
+    function countSecretClick() {
+      secretClicks += 1;
+      clearTimeout(secretTimer);
+      secretTimer = setTimeout(() => {
+        secretClicks = 0;
+      }, 1400);
+
+      if (secretClicks >= 3) {
+        secretClicks = 0;
+        showEasterEgg();
+      }
+    }
+
     startButton.addEventListener("click", startQuiz);
     backButton.addEventListener("click", goBack);
     restartSmall.addEventListener("click", startQuiz);
     retakeButton.addEventListener("click", startQuiz);
     copyButton.addEventListener("click", copyResult);
+    secretGum.addEventListener("click", countSecretClick);
+    closeEgg.addEventListener("click", hideEasterEgg);
+    easterEggModal.addEventListener("click", (event) => {
+      if (event.target === easterEggModal) hideEasterEgg();
+    });
   </script>
 </body>
 </html>
